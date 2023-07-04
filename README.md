@@ -6,7 +6,7 @@
 <p align="center">
   <a href="https://gitea.ocram85.com/OCram85/tiniproxy/">
     <img
-      src="/OCram85/tiniproxy/raw/branch/master/assets/social-logo.png"
+      src="/OCram85/tiniproxy/raw/branch/main/assets/social-logo.png"
       alt="tiniproxy"
     >
   </a>
@@ -22,7 +22,7 @@
 
 <p align="center">
   <a href="https://drone.ocram85.com/OCram85/tiniproxy">
-    <img src="https://drone.ocram85.com/api/badges/OCram85/tiniproxy/status.svg" alt="Master Branch Build Status">
+    <img src="https://drone.ocram85.com/api/badges/OCram85/tiniproxy/status.svg" alt="Main Branch Build Status">
   </a>
 </p>
 
