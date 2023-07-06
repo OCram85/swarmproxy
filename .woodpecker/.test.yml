@@ -1,0 +1,12 @@
+pipeline:
+  testDockerfile:
+    image: woodpeckerci/plugin-docker-buildx
+    settings:
+      dry_run: true
+      registry: gitea.ocram85.com
+      repo: gitea.ocram85.com/ocram85/swarmproxy
+      dockerfile: Dockerfile
+      tags: next
+      build_args:
+        - VERSION=${CI_COMMIT_TAG:-PR ${CI_COMMIT_PULL_REQUEST}}
+        - TAG=${CI_COMMIT_TAG}

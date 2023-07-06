@@ -1,0 +1,23 @@
+depends_on:
+  - test
+
+pipeline:
+  buildTestImage:
+    image: woodpeckerci/plugin-docker-buildx
+    settings:
+      #dry_run: true
+      registry: gitea.ocram85.com
+      repo: gitea.ocram85.com/ocram85/swarmproxy
+      platforms: linux/amd64
+      dockerfile: Dockerfile
+      tags: next
+      username:
+        from_secret: gitea_user
+      password:
+        from_secret: gitea_passwd
+      build_args:
+        - VERSION=${CI_COMMIT_TAG:-PR ${CI_COMMIT_PULL_REQUEST}}
+        - TAG=${CI_COMMIT_TAG}
+    when:
+      event: pull_request
+
