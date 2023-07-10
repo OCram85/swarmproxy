@@ -21,7 +21,7 @@ jobs:
         uses: actions/metadata-action@v4
         with:
           images: |
-            ocram85/swarmproxy
+            gitea.ocram85.com/ocram85/swarmproxy
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
