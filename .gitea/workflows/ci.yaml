@@ -1,10 +1,12 @@
-name: docker test build
+name: ci
 
 run-name: docker pipeline
 
 on:
   push:
     #branches: none #[ main ]
+    tags-ignore:
+      - *
   pull_request:
     #branches:  none # [ main ]
   # Allows you to run this workflow manually from the Actions tab
@@ -35,4 +37,4 @@ jobs:
         uses: actions/build-push-action@v4
         with:
           push: false
-          tags: gitea.ocram85.com/ocram85/swarmproxy:next2
+          tags: gitea.ocram85.com/ocram85/swarmproxy:next
