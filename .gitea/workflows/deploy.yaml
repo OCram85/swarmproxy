@@ -1,6 +1,6 @@
-name: docker
+name: ci
 
-run-name: Container Image Deployment
+run-name: tag based container build and push
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
       - 'v*'
 
 jobs:
-  deployment-build:
+  deployment-job:
     runs-on: ubuntu-latest
     container:
       image: catthehacker/ubuntu:act-latest
@@ -43,7 +43,6 @@ jobs:
         name: Build and push
         uses: actions/build-push-action@v4
         with:
-          #context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
