@@ -6,7 +6,7 @@ on:
   push:
     #branches: none #[ main ]
     tags-ignore:
-      - *
+      - '*'
   pull_request:
     #branches:  none # [ main ]
   # Allows you to run this workflow manually from the Actions tab
