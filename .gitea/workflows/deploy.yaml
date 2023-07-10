@@ -43,7 +43,7 @@ jobs:
         name: Build and push
         uses: actions/build-push-action@v4
         with:
-          context: .
+          #context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
