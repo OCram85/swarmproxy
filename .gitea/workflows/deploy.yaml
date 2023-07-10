@@ -10,7 +10,7 @@ on:
       - 'v*'
 
 jobs:
-  build-container:
+  deployment-build:
     runs-on: ubuntu-latest
     container:
       image: catthehacker/ubuntu:act-latest
@@ -43,7 +43,7 @@ jobs:
         name: Build and push
         uses: actions/build-push-action@v4
         with:
-          #context: .
+          context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

@@ -1,6 +1,6 @@
 name: docker
 
-run-name: ${{ gitea.actor }} testing docker builder
+run-name: docker pipeline
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-container:
+  test-build:
     runs-on: ubuntu-latest
     container:
       image: catthehacker/ubuntu:act-latest

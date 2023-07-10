@@ -1,6 +1,6 @@
-name: build testing
+name: testing
 
-run-name: ${{ gitea.actor }} is testing out Gitea Actions
+run-name: Testing out Gitea Actions
 
 on:
   push:
