@@ -23,6 +23,7 @@ ENV TINYPROXY_UID 5123
 ENV TINYPROXY_GID 5123
 
 ENV UPSTREAM_PROXY ""
+ENV UPSTREAM_PROXY_FILE ""
 ENV PORT "8888"
 ENV TIMEOUT "600"
 ENV LOGLEVEL "Info"
@@ -49,8 +50,6 @@ LogLevel $LOGLEVEL
 MaxClients $MAXCLIENTS
 ViaProxyName "tinyproxy"
 
-#upstream http $UPSTREAM_PROXY "."
-
 Filter "$FILTER_FILE"
 FilterURLs Off
 FilterCaseSensitive Off
@@ -58,7 +57,13 @@ FilterDefaultDeny Yes
 
 Allow 127.0.0.1/8
 Allow 10.0.0.0/8
+
 EOF
+
+RUN set -eu && \
+  CONFIG='/etc/tinyproxy/tinyproxy.conf' && \
+  [ -z "$UPSTREAM_PROXY_FILE" ] || export UPSTREAM_PROXY=$(cat $UPSTREAM_PROXY_FILE) && \
+  [ -z "$UPSTREAM_PROXY" ] || echo "upstream http $UPSTREAM_PROXY \".\"" >> "$CONFIG"
 
 RUN chown -R ${TINYPROXY_UID}:${TINYPROXY_GID} /etc/tinyproxy /var/log/tinyproxy
 USER ${TINYPROXY_UID}:${TINYPROXY_GID}
