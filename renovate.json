@@ -1,0 +1,12 @@
+{
+  "dependencyDashboard": true,
+  "docker": {
+    "enabled": true
+  },
+  "github-actions": {
+    "enabled": true,
+    "fileMatch": [
+      "^\\.gitea/workflows/[^/]+\\.ya?ml$"
+    ]
+  }
+}
