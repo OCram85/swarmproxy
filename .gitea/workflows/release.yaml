@@ -20,7 +20,8 @@ jobs:
         id: use-go-action
         uses: actions/release-action@main
         with:
-          #files: -|
+          files: |-
+            CHANGELOG.md
           api_key: '${{ secrets.TOKEN }}'
-          #title:
-          #body:
+          body: |
+            > :bulb: **Note:** See [CHANGELOG.md](src/branch/main/CHANGELOG.md) for recent changes.
