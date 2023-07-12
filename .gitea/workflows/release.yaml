@@ -1,0 +1,22 @@
+name: release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Use Go Action
+        id: use-go-action
+        uses: actions/release-action@main
+        with:
+          #files: -|
+          api_key: '${{ secrets.TOKEN }}'
+          #title:
+          #body:
