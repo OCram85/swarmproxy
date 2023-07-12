@@ -1,6 +1,6 @@
 FROM alpine:3.18.2
 
-#LABEL build_version=""
+# Set labels manually, each build service differs in used or predefined labels.
 LABEL maintainer="OCram85"
 ARG VERSION
 LABEL build_version="${VERSION}"
@@ -17,8 +17,7 @@ LABEL org.opencontainers.image.url="https://gitea.ocram85.com/OCram85/swarmproxy
 LABEL org.opencontainers.image.source="https://gitea.ocram85.com/OCram85/swarmproxy.git"
 LABEL org.opencontainers.image.documentation="https://gitea.ocram85.com/OCram85/swarmproxy"
 
-# Use a custom UID/GID instead of the default system UID which has a greater possibility
-# for collisions with the host and other containers.
+# Use a individual user and group ip for files and process
 ENV TINYPROXY_UID 5123
 ENV TINYPROXY_GID 5123
 
@@ -28,46 +27,24 @@ ENV PORT "8888"
 ENV TIMEOUT "600"
 ENV LOGLEVEL "Info"
 ENV MAXCLIENTS "600"
-ENV FILTER_FILE "/etc/tinyproxy/filter"
+ENV FILTER_FILE "/app/filter"
 
-# Curl is for healthchecks.
+
+# get existing packages
+# curl for healthchecks and debugging
 RUN apk add --no-cache \
       tinyproxy curl
 
-RUN mv /etc/tinyproxy/tinyproxy.conf /etc/tinyproxy/tinyproxy.default.conf
+COPY entrypoint.sh /app/entrypoint.sh
 
-RUN <<EOF cat >> /etc/tinyproxy/tinyproxy.conf
-User $TINYPROXY_UID
-Group $TINYPROXY_GID
-Port $PORT
-Timeout $TIMEOUT
-DefaultErrorFile "/usr/share/tinyproxy/default.html"
+RUN touch /app/proxy.conf && \
+  chmod +x /app/entrypoint.sh && \
+  chown -R ${TINYPROXY_UID}:${TINYPROXY_GID} /app /etc/tinyproxy /var/log/tinyproxy
 
-StatHost "tinyproxy.stats"
-StatFile "/usr/share/tinyproxy/stats.html"
-
-LogLevel $LOGLEVEL
-MaxClients $MAXCLIENTS
-ViaProxyName "tinyproxy"
-
-Filter "$FILTER_FILE"
-FilterURLs Off
-FilterCaseSensitive Off
-FilterDefaultDeny Yes
-
-Allow 127.0.0.1/8
-Allow 10.0.0.0/8
-
-EOF
-
-RUN set -eu && \
-  CONFIG='/etc/tinyproxy/tinyproxy.conf' && \
-  [ -z "$UPSTREAM_PROXY_FILE" ] || export UPSTREAM_PROXY=$(cat $UPSTREAM_PROXY_FILE) && \
-  [ -z "$UPSTREAM_PROXY" ] || echo "upstream http $UPSTREAM_PROXY \".\"" >> "$CONFIG"
-
-RUN chown -R ${TINYPROXY_UID}:${TINYPROXY_GID} /etc/tinyproxy /var/log/tinyproxy
 USER ${TINYPROXY_UID}:${TINYPROXY_GID}
+WORKDIR /app
 
 EXPOSE 8888
 
-ENTRYPOINT ["/usr/bin/tinyproxy", "-d"]
+ENTRYPOINT ["/app/entrypoint.sh"]
+CMD ["-c", "/app/proxy.conf", "-d"]

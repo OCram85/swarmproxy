@@ -13,7 +13,7 @@
 </p>
 
 <h1 align="center">
-  swarmproxy
+  Swarmproxy - Tame your traffic
 </h1>
 
 <p align="center">
@@ -26,10 +26,9 @@
 
 ### 1. ⚡ Get the image 📦
 
-You can download the image from the gitea embedded container registry: `gitea.ocram85.com/ocram85/swarmproxy` with these tags:
+You can download the image from the Gitea embedded container registry: `gitea.ocram85.com/ocram85/swarmproxy` with these tags:
 
-- `latest` - Is based on the lasted master branch commit.
-- `next` - Is a test build based on the pull request
+- `latest`, `main` - Is based on the lasted master branch commit.
 - `1`, `0.1`, `0.1.0` - tag based version.
 
 > **💡 NOTE: See the [packages page](https://gitea.ocram85.com/OCram85/-/packages/container/swarmproxy/latest) for latest version and all other available tags.**
@@ -39,43 +38,58 @@ You can download the image from the gitea embedded container registry: `gitea.oc
 ```yaml
 version: "3.8"
 
-secrets:
-  upstream-proxy:
-    external: true
+networks:
+  egress:
+   attachable: true
+   #external: true
+
+#configs:
+#  filter_file:
+#    # config can be predefined / external or loaded from file
+#    #external: true
+#    file: ./filter.txt
+
+#secrets:
+#  upstream-proxy:
+#    external: true
 
 services:
   swarmproxy:
     image: gitea.ocram85.com/OCram85/swarmproxy:latest
+    deploy:
+      replicas: 1
+    #secrets:
+    #  - upstream-proxy
     environment:
-      # mandatory environment variables
-      - UPSTREAM_PROXY=
+      # Recommended settings
+      # Use an optional upstream proxy
+      #- UPSTREAM_PROXY=
       # Set UPSTREAM_PROXY as docker secret if your upstream needs authentication
       # Eg.: http://user:password@upstream.intra:3128
       #- UPSTREAM_PROXY_FILE=/run/secrets/UPSTREAM_PROXY
 
-      # optional settings
+      # OPTIONAL config keys
       #- TINYPROXY_UID=5123
       #- TINYPROXY_GID=5123
       #- PORT=8888
       #- TIMEOUT=600
       #- LOGLEVEL=Info
       #- MAXCLIENTS=600
-      #- FILTER_FILE=/ety/tinyproxy/filter
-    deploy:
-      replicas: 1
+      #- FILTER_FILE=/app/filter
     volumes:
-      # mount a single file into the container if you need the modify it afterwards
-      # You can reload the file with `kill -s USR1 $(pidof tinyproxy)`
-      - ./filter.txt:/etc/tinyproxy/filter:ro
-      # Use a docker config or volume in production
-      - 
+      # You can mount a single filter file into the container.
+      # To reload the file use the docker kill -s USR1 <container_id| container_name> command.
+      - ./filter.txt:/app/filter:ro
+    configs:
+      - source: filter_file
+        target: /app/filter
     networks:
-      - egress
+      egress:
+        aliases:
+          - swarmproxy
+          - proxy
 
-networks:
-  egress:
-   attachable: true
-   #external: true
+
 ```
 
 ## 😡 We're Using GitHub Under Protest
