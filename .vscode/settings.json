@@ -65,6 +65,7 @@
       "path": "${workspaceRoot}/.vscode/dictionaries/project-words.txt",
       "description": "Words used in this project",
       "addWords": true
+
     },
     "custom": true
   }

@@ -6,3 +6,9 @@
 * 📦 BUILD
   * Add gitea release action (#7)
   * Finalize ci (#5)
+  * Setup basic action based ci (#3)
+* 🤖 DEPENDENCIES
+  * Use absolute urls for action calls (#10)
+  * Adds renovate support (#8)
+* ⚙️ META
+  * Adds initial readme (#4)

@@ -27,7 +27,7 @@ EOF
 
 function addUpstreamConfig() {
   [ -z "$UPSTREAM_PROXY_FILE" ] || export UPSTREAM_PROXY=$(cat $UPSTREAM_PROXY_FILE)
-  [ -z "$UPSTREAM_PROXY" ] || echo "upstream http $UPSTREAM_PROXY \".\"" >> "$CONFIG"
+  [ -z "$UPSTREAM_PROXY" ] || echo "Upstream http $UPSTREAM_PROXY " >> "$CONFIG"
 }
 
 function addFilterConfig() {

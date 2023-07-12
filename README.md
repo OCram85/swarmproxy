@@ -7,22 +7,40 @@
   <a href="https://gitea.ocram85.com/OCram85/swarmproxy/">
     <img
       src="/OCram85/swarmproxy/raw/branch/main/assets/social-logo.png"
-      alt="swarmproxy"
+      alt="Swarmproxy - Tame your traffic"
     >
   </a>
 </p>
 
-<h1 align="center">
-  Swarmproxy - Tame your traffic
-</h1>
-
 <p align="center">
-  Swarmproxy is a simple http/https proxy for outbound traffic in a docker swarm cluster.
+🦁 Swarmproxy is a simple http proxy to limit your outbound traffic.
 </p>
 
-## :book: About
+## ❓ FAQ
 
-## 🤖 Quickstart
+### What ist Swarmproxy?
+
+Swarmproxy is a simply way to integrate a http proxy in your Docker swarm cluster or any other container network.
+It acts as an centralized proxy to limit your outbound / egress traffic. You can also enable a whitelist filter to
+limit the allowed domains. There is also an option to use a upstream proxy.
+
+### What does Swarmproxy for you?
+
+Enterprise and production environments often face more stringent security requirements.
+Therefore, unfiltered Internet access may be prohibited.
+
+So Swarmproxy could help you with these features:
+
+- Prevent direct web access from Container workload.
+- Upstream proxy with or without authentication
+- Optional domain based whitelist filter.
+
+### What does Swarmproxy not?
+
+Swarmproxy is just a supercharged Tinyproxy where you can point your container workload to.
+
+> ☣️ Swarmproxy does not block the web access or other traffic if the proxy is not used. It's not a firewall, and it
+> does not customize your iptables or so
 
 ### 1. ⚡ Get the image 📦
 
@@ -33,7 +51,7 @@ You can download the image from the Gitea embedded container registry: `gitea.oc
 
 > **💡 NOTE: See the [packages page](https://gitea.ocram85.com/OCram85/-/packages/container/swarmproxy/latest) for latest version and all other available tags.**
 
-### 2.a Run as Docker Swarm Stack
+### 2. 🛡️ Run as Docker Swarm Stack
 
 ```yaml
 version: "3.8"
@@ -55,6 +73,7 @@ networks:
 
 services:
   swarmproxy:
+    # Do not use the `latest` tag in production!
     image: gitea.ocram85.com/OCram85/swarmproxy:latest
     deploy:
       replicas: 1
@@ -88,9 +107,12 @@ services:
         aliases:
           - swarmproxy
           - proxy
-
-
 ```
+
+### 3. Use the proxy form other containers
+
+
+## 💣 Known Issues
 
 ## 😡 We're Using GitHub Under Protest
 

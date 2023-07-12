@@ -1,0 +1,54 @@
+version: "3.8"
+
+networks:
+  egress:
+   attachable: true
+   #external: true
+
+#configs:
+#  filter_file:
+#    # config can be predefined / external or loaded from file
+#    #external: true
+#    file: ./filter.txt
+
+#secrets:
+#  upstream-proxy:
+#    external: true
+
+services:
+  swarmproxy:
+    image: gitea.ocram85.com/ocram85/swarmproxy:latest
+    deploy:
+      replicas: 1
+    #secrets:
+    #  - upstream-proxy
+    environment:
+      # Recommended settings
+      - LOGLEVEL=Connect
+
+      # Use an optional upstream proxy
+      #- UPSTREAM_PROXY=
+      # Set UPSTREAM_PROXY as docker secret if your upstream needs authentication
+      # Eg.: http://user:password@upstream.intra:3128
+      #- UPSTREAM_PROXY_FILE=/run/secrets/UPSTREAM_PROXY
+
+      # OPTIONAL config keys
+      #- TINYPROXY_UID=5123
+      #- TINYPROXY_GID=5123
+      #- PORT=8888
+      #- TIMEOUT=600
+      #- MAXCLIENTS=600
+      #- FILTER_FILE=/app/filter
+    # You can mount a single filter file into the container.
+    # To reload the file use the docker kill -s USR1 <container_id| container_name> command.
+    #volumes:
+    #  - ./filter.txt:/app/filter:ro
+    # alenate filter file mount
+    #configs:
+    #  - source: filter_file
+    #    target: /app/filter
+    networks:
+      egress:
+        aliases:
+          - swarmproxy
+          - proxy
