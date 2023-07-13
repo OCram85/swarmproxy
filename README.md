@@ -112,11 +112,9 @@ services:
           - proxy
 ```
 
-### 3. 🚀 Full example
+## 🚀 Examples
 
-You can find a full example containing a fake upstream, swarmproxy and workload container in the
-[docker-compose.yml](docker-compose.yml) file.
-
+See the [Readme](examples/) docs in the examples folder...
 
 ## 💣 Known Issues
 

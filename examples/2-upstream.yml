@@ -1,11 +1,9 @@
 version: "3.8"
 
-
 # Setting up 3 default networks to act as dummy:
 # - backend : internal only network
 # - dmz : dmz network with connections allowed from internal and external
 # - egress : dummy egress zone with fake upstream proxy
-
 networks:
   egress:
    attachable: true
@@ -36,8 +34,8 @@ services:
     deploy:
       replicas: 1
     environment:
-      - UPSTREAM_PROXY=upstream:8888
       - LOGLEVEL=Info
+      - UPSTREAM_PROXY=upstream:8888
     networks:
       dmz:
         aliases:
@@ -45,7 +43,7 @@ services:
           - proxy
       egress:
 
-  # container workload example whicht tries to communicate through our swarmproxy instance
+  # container workload example which tries to communicate through our swarmproxy instance
   # http request / response:
   # [curl container] <---|req/res|---> [swarmproxy] <---|req/res|---> [upstream] <---|req/res|---> [target]
   curl:
@@ -57,7 +55,7 @@ services:
     deploy:
       replicas: 1
       restart_policy:
-        condition: any
+        condition: on-failure
         delay: 10s
         max_attempts: 5
         window: 120s

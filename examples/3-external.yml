@@ -1,0 +1,101 @@
+version: "3.8"
+
+# IMPORTANT: Run the following command to add the required filter config file:
+# echo "google.com" | docker config create filter_file -
+configs:
+  filter_file:
+    external: true
+
+# IMPORTANT: Run the following command to add the required filter config file:
+# echo "upstream:8888" | docker secret create upstream-proxy -
+secrets:
+  upstream-proxy:
+    external: true
+
+# Setting up 3 default networks to act as dummy:
+# - backend : internal only network
+# - dmz : dmz network with connections allowed from internal and external
+# - egress : dummy egress zone with fake upstream proxy
+networks:
+  egress:
+   attachable: true
+  dmz:
+    attachable: true
+  backend:
+    internal: true
+
+services:
+  # Creating a fake upstream proxy
+  upstream:
+    image: gitea.ocram85.com/ocram85/swarmproxy:latest
+    deploy:
+      replicas: 1
+    environment:
+      - LOGLEVEL=Info
+    networks:
+      egress:
+        aliases:
+          - upstream
+
+  # Creating our swarmproxy instance to use the external upstream proxy
+  swarmproxy:
+    # Do not use the `latest` tag in production!
+    image: gitea.ocram85.com/ocram85/swarmproxy:latest
+    depends_on:
+      - upstream
+    deploy:
+      replicas: 1
+    environment:
+      - LOGLEVEL=Info
+      #- UPSTREAM_PROXY=upstream:8888
+      - UPSTREAM_PROXY_FILE=/run/secrets/upstream-proxy
+      - FILTER_FILE=/app/filter
+    configs:
+      - source: filter_file
+        target: /app/filter
+    secrets:
+      - upstream-proxy
+    networks:
+      dmz:
+        aliases:
+          - swarmproxy
+          - proxy
+      egress:
+
+  # container workload example whicht tries to communicate through our swarmproxy instance
+  # http request / response:
+  # [curl container] <---|req/res|---> [swarmproxy] <---|req/res|---> [upstream] <---|req/res|---> [target]
+  curl:
+    image: curlimages/curl:8.1.2
+    command: ["-I", "-x", "proxy:8888", "https://google.com"]
+    depends_on:
+      - upstream
+      - swarmproxy
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 5
+        window: 120s
+    networks:
+      - backend
+      - dmz
+
+  # Example for blocked request if there is no matching domain in the filter file.
+  curl-blocked:
+    image: curlimages/curl:8.1.2
+    command: ["-I", "-x", "proxy:8888", "https://amazon.com"]
+    depends_on:
+      - upstream
+      - swarmproxy
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 5
+        window: 120s
+    networks:
+      - backend
+      - dmz
