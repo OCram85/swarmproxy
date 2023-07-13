@@ -1,10 +1,14 @@
+FOSS
+gitea
 Gitea
 LOGLEVEL
 MAXCLIENTS
+ocram
 Quickstart
 swarmproxy
 Swarmproxy
 tbd
+tinyproxy
 Tinyproxy
 TINYPROXY
 UID

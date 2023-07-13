@@ -16,12 +16,10 @@
 🦁 Swarmproxy is a simple http proxy to limit your outbound traffic.
 </p>
 
-## ❓ FAQ
-
-### What ist Swarmproxy?
+## 📖 About
 
 Swarmproxy is a simply way to integrate a http proxy in your Docker swarm cluster or any other container network.
-It acts as an centralized proxy to limit your outbound / egress traffic. You can also enable a whitelist filter to
+It acts as an centralized proxy to limit your outbound / egress traffic. You can also add a whitelist filter to
 limit the allowed domains. There is also an option to use a upstream proxy.
 
 ### What does Swarmproxy for you?
@@ -31,16 +29,18 @@ Therefore, unfiltered Internet access may be prohibited.
 
 So Swarmproxy could help you with these features:
 
-- Prevent direct web access from Container workload.
-- Upstream proxy with or without authentication
-- Optional domain based whitelist filter.
+- ✔️ Prevent direct web access from Container workload.
+- ✔️ Upstream proxy with or without authentication
+- ✔️ Optional domain based whitelist filter.
 
 ### What does Swarmproxy not?
 
 Swarmproxy is just a supercharged Tinyproxy where you can point your container workload to.
 
-> ☣️ Swarmproxy does not block the web access or other traffic if the proxy is not used. It's not a firewall, and it
-> does not customize your iptables or so
+- ☣️ Swarmproxy does not block the web access or other traffic if you workload doesn't use a proxy
+- ☣️ It's not a firewall, thus it does not customize your iptables or any other firewall policies.
+
+## 🚀 Quickstart
 
 ### 1. ⚡ Get the image 📦
 
@@ -49,9 +49,12 @@ You can download the image from the Gitea embedded container registry: `gitea.oc
 - `latest`, `main` - Is based on the lasted master branch commit.
 - `1`, `0.1`, `0.1.0` - tag based version.
 
-> **💡 NOTE: See the [packages page](https://gitea.ocram85.com/OCram85/-/packages/container/swarmproxy/latest) for latest version and all other available tags.**
+> **💡 NOTE: See the [packages page](https://gitea.ocram85.com/OCram85/-/packages/container/swarmproxy/latest)
+> for latest version and all other available tags.**
 
 ### 2. 🛡️ Run as Docker Swarm Stack
+
+This example shows all available configuration keys / environment variables for Swarmproxy.
 
 ```yaml
 version: "3.8"
@@ -80,6 +83,7 @@ services:
     #secrets:
     #  - upstream-proxy
     environment:
+      - LOGLEVEL=Info
       # Recommended settings
       # Use an optional upstream proxy
       #- UPSTREAM_PROXY=
@@ -92,16 +96,15 @@ services:
       #- TINYPROXY_GID=5123
       #- PORT=8888
       #- TIMEOUT=600
-      #- LOGLEVEL=Info
       #- MAXCLIENTS=600
       #- FILTER_FILE=/app/filter
     volumes:
       # You can mount a single filter file into the container.
       # To reload the file use the docker kill -s USR1 <container_id| container_name> command.
-      - ./filter.txt:/app/filter:ro
-    configs:
-      - source: filter_file
-        target: /app/filter
+      # - ./filter.txt:/app/filter:ro
+    #configs:
+    #  - source: filter_file
+    #    target: /app/filter
     networks:
       egress:
         aliases:
@@ -109,7 +112,10 @@ services:
           - proxy
 ```
 
-### 3. Use the proxy form other containers
+### 3. 🚀 Full example
+
+You can find a full example containing a fake upstream, swarmproxy and workload container in the
+[docker-compose.yml](docker-compose.yml) file.
 
 
 ## 💣 Known Issues
@@ -139,11 +145,11 @@ code in Copilot.
 
 ## 🙏 Credits
 
-swarmproxy is based on the following projects and wouldn't be possible without them:
+Swarmproxy is based on the following projects and wouldn't be possible without them:
 
 - [Tinyproxy](https://github.com/tinyproxy/tinyproxy) - The Tinyproxy project itself
-- [docker-tinyproxy](https://github.com/kalaksi/docker-tinyproxy) - A containerized tinyproxy variant.
-- [docker-tinyproxy](https://github.com/ajoergensen/docker-tinyproxy) - A containerized tinyproxy variant.
+- [docker-tinyproxy](https://github.com/kalaksi/docker-tinyproxy) - A containerized Tinyproxy variant.
+- [docker-tinyproxy](https://github.com/ajoergensen/docker-tinyproxy) - A containerized Tinyproxy variant.
 
 ## ⚖️ License (AGPLv3)
 
