@@ -6,7 +6,7 @@
 <p align="center">
   <a href="https://gitea.ocram85.com/OCram85/swarmproxy/">
     <img
-      src="/OCram85/swarmproxy/raw/branch/main/assets/social-logo.png"
+      src="assets/social-logo.png"
       alt="Swarmproxy - Tame your traffic"
     >
   </a>
