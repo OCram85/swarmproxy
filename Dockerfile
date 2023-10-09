@@ -29,11 +29,12 @@ ENV LOGLEVEL "Info"
 ENV MAXCLIENTS "600"
 ENV FILTER_FILE "/app/filter"
 
+ENV TZ "Europe/Berlin"
 
 # get existing packages
 # curl for healthchecks and debugging
 RUN apk add --no-cache \
-      tinyproxy curl
+      tinyproxy curl tzdata
 
 COPY entrypoint.sh /app/entrypoint.sh
 
