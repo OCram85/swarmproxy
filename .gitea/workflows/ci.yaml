@@ -20,7 +20,7 @@ jobs:
       -
         name: Docker meta
         id: meta
-        uses: https://gitea.ocram85.com/actions/metadata-action@v4
+        uses: https://gitea.ocram85.com/actions/metadata-action@v5
         with:
           images: |
             gitea.ocram85.com/ocram85/swarmproxy
