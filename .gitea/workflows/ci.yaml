@@ -34,7 +34,7 @@ jobs:
         uses: https://gitea.ocram85.com/actions/setup-buildx-action@v3
       -
         name: Login to Gitea Package Registry
-        uses: https://gitea.ocram85.com/actions/login-action@v2
+        uses: https://gitea.ocram85.com/actions/login-action@v3
         with:
           registry: gitea.ocram85.com
           username: ${{ secrets.USERNAME }}
