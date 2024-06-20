@@ -42,7 +42,7 @@ jobs:
           password: ${{ secrets.TOKEN }}
       -
         name: Build and push
-        uses: https://gitea.ocram85.com/actions/build-push-action@v4
+        uses: https://gitea.ocram85.com/actions/build-push-action@v6
         with:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
