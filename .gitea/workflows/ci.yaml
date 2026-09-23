@@ -45,6 +45,8 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v7
+        env:
+          ACTIONS_RUNTIME_TOKEN: ''
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
