@@ -14,8 +14,10 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v7
+      # No checkout step: the act runner clones the repo into the workspace
+      # before the first step (proven by two years of successful builds that
+      # had no checkout step), and actions/checkout@v7's post hook is a
+      # suspect for the slow implicit "Complete job" phase.
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v6
