@@ -18,18 +18,18 @@ LABEL org.opencontainers.image.source="https://gitea.ocram85.com/OCram85/swarmpr
 LABEL org.opencontainers.image.documentation="https://gitea.ocram85.com/OCram85/swarmproxy"
 
 # Use a individual user and group ip for files and process
-ENV TINYPROXY_UID 5123
-ENV TINYPROXY_GID 5123
+ENV TINYPROXY_UID="5123"
+ENV TINYPROXY_GID="5123"
 
-ENV UPSTREAM_PROXY ""
-ENV UPSTREAM_PROXY_FILE ""
-ENV PORT "8888"
-ENV TIMEOUT "600"
-ENV LOGLEVEL "Info"
-ENV MAXCLIENTS "600"
-ENV FILTER_FILE "/app/filter"
+ENV UPSTREAM_PROXY=""
+ENV UPSTREAM_PROXY_FILE=""
+ENV PORT="8888"
+ENV TIMEOUT="600"
+ENV LOGLEVEL="Info"
+ENV MAXCLIENTS="600"
+ENV FILTER_FILE="/app/filter"
 
-ENV TZ "Europe/Berlin"
+ENV TZ="Europe/Berlin"
 
 # get existing packages
 # curl for healthchecks and debugging
