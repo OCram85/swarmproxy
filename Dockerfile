@@ -1,4 +1,4 @@
-FROM alpine:3.24.2
+FROM alpine:3.24.3
 
 # Set labels manually, each build service differs in used or predefined labels.
 LABEL maintainer="OCram85"
